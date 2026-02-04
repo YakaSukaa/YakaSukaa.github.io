@@ -62,7 +62,6 @@
       z-index: 2;
     }
 
-    /* 🔑 KLUCZ: NIE jest FIXED */
     #no {
       position: fixed;
       z-index: 999;
@@ -120,27 +119,62 @@
     const container = document.getElementById("container");
     const topSection = document.getElementById("topSection");
 
+    let yesCount = 1;
+
     /* STARTOWA POZYCJA NIE (obok TAK) */
     const yesRect = yes.getBoundingClientRect();
     no.style.left = yesRect.right + 20 + "px";
     no.style.top = yesRect.top + "px";
 
-    /* 🔥 UCIEKA PO CAŁYM EKRANIE */
-    no.addEventListener("mouseover", () => {
+    /* UCIEKANIE NIE */
+    function moveNo() {
       const maxX = window.innerWidth - no.offsetWidth;
       const maxY = window.innerHeight - no.offsetHeight;
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+      no.style.left = Math.random() * maxX + "px";
+      no.style.top = Math.random() * maxY + "px";
+    }
 
-      no.style.left = x + "px";
-      no.style.top = y + "px";
+    /* 🔥 NOWY TAK NA MOBILE */
+    function spawnYesButton() {
+      const newYes = document.createElement("button");
+      newYes.innerText = "TAK 💖";
+      newYes.style.position = "fixed";
+      newYes.style.background = "#ff4d6d";
+      newYes.style.color = "white";
+      newYes.style.border = "none";
+      newYes.style.borderRadius = "30px";
+      newYes.style.padding = "15px 30px";
+      newYes.style.fontSize = "18px";
+      newYes.style.cursor = "pointer";
+      newYes.style.zIndex = 1000 + yesCount;
+
+      const maxX = window.innerWidth - 140;
+      const maxY = window.innerHeight - 70;
+
+      newYes.style.left = Math.random() * maxX + "px";
+      newYes.style.top = Math.random() * maxY + "px";
+
+      newYes.onclick = yes.onclick;
+
+      document.body.appendChild(newYes);
+      yesCount++;
+    }
+
+    /* DESKTOP */
+    no.addEventListener("mouseover", moveNo);
+
+    /* MOBILE */
+    no.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNo();
+      spawnYesButton();
     });
 
     /* KLIK TAK */
     yes.onclick = () => {
       topSection.remove();
-      no.remove(); // NIE znika po TAK 😈
+      no.remove();
 
       container.innerHTML = `
         <img src="hug.gif" class="hug-gif">
