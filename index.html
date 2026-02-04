@@ -1,52 +1,108 @@
-<script>
-  const no = document.getElementById("no");
-  const yes = document.getElementById("yes");
-  const container = document.getElementById("container");
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Dla Ciebie ❤️</title>
 
-  no.addEventListener("mouseover", () => {
-    no.style.left = Math.random() * (window.innerWidth - 100) + "px";
-    no.style.top = Math.random() * (window.innerHeight - 50) + "px";
-  });
+  <style>
+    body {
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
 
-  yes.onclick = () => {
-    container.innerHTML = `
-      <h1 style="color:white; font-size:48px;">
-        Kocham Cię Dziubas ❤️🥰
-      </h1>
-      <p style="color:white; font-size:22px;">
-        Jesteś moją walentynką 💖
-      </p>
-    `;
-    startHearts();
-  };
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      margin: 10px;
+    }
 
-  function startHearts() {
-    spawnHeart();
-  }
+    #yes { background: #ff4d6d; color: white; }
+    #no { position: absolute; }
 
-  function spawnHeart() {
-    createHeart();
-    setTimeout(spawnHeart, random(200, 700));
-  }
+    .heart {
+      position: fixed;
+      top: -50px;
+      pointer-events: none;
+      animation-name: fall;
+      animation-timing-function: linear;
+    }
 
-  function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = "❤️";
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
 
-    const size = random(16, 40);
-    const duration = random(4000, 9000);
+<body>
 
-    heart.style.left = random(0, 100) + "vw";
-    heart.style.fontSize = size + "px";
-    heart.style.opacity = Math.random();
-    heart.style.animationDuration = duration + "ms";
+  <div id="container">
+    <h1>Czy zostaniesz moją walentynką? ❤️</h1>
+    <button id="yes">TAK 💖</button>
+    <button id="no">NIE 😢</button>
+  </div>
 
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), duration);
-  }
+  <script>
+    const no = document.getElementById("no");
+    const yes = document.getElementById("yes");
+    const container = document.getElementById("container");
 
-  function random(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-</script>
+    no.addEventListener("mouseover", () => {
+      no.style.left = Math.random() * (window.innerWidth - 100) + "px";
+      no.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    });
+
+    yes.onclick = () => {
+      container.innerHTML = `
+        <h1 style="color:white; font-size:48px;">
+          Kocham Cię Dziubas ❤️🥰
+        </h1>
+        <p style="color:white; font-size:22px;">
+          Jesteś moją walentynką 💖
+        </p>
+      `;
+
+      startHearts();
+    };
+
+    function startHearts() {
+      setInterval(createHeart, random(200, 700));
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerText = "❤️";
+
+      const size = random(16, 40);
+      const duration = random(4000, 9000);
+
+      heart.style.left = random(0, 100) + "vw";
+      heart.style.fontSize = size + "px";
+      heart.style.opacity = Math.random();
+      heart.style.animationDuration = duration + "ms";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), duration);
+    }
+
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+  </script>
+
+</body>
+</html>
