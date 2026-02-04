@@ -1,3 +1,57 @@
+<script>
+  const no = document.getElementById("no");
+  const yes = document.getElementById("yes");
+
+  let heartInterval;
+
+  no.addEventListener("mouseover", () => {
+    no.style.left = Math.random() * (window.innerWidth - 100) + "px";
+    no.style.top = Math.random() * (window.innerHeight - 50) + "px";
+  });
+
+  yes.onclick = () => {
+    document.body.innerHTML = `
+      <h1 style="color:white; font-size:48px;">
+        Wiedziałem!!! ❤️🥰
+      </h1>
+      <p style="color:white; font-size:22px;">
+        Jesteś moją walentynką 💖
+      </p>
+    `;
+
+    startHearts();
+  };
+
+  function startHearts() {
+    heartInterval = setInterval(() => {
+      createHeart();
+    }, random(200, 700));
+  }
+
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerText = "❤️";
+
+    const size = random(16, 40);
+    const duration = random(4000, 9000);
+
+    heart.style.left = random(0, 100) + "vw";
+    heart.style.fontSize = size + "px";
+    heart.style.opacity = Math.random();
+    heart.style.animationDuration = duration + "ms";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, duration);
+  }
+
+  function random(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+</script>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -77,10 +131,8 @@
   yes.onclick = () => {
     document.body.innerHTML = `
       <h1 style="color:white; font-size:48px;">
-        Wiedziałem!!! ❤️🥰
+        Kocham Cię Dziubas ❤️🥰
       </h1>
-      <p style="color:white; font-size:22px;">
-        Jesteś moją walentynką 💖
       </p>
     `;
 
