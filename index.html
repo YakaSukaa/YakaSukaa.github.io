@@ -126,18 +126,38 @@
     function moveNo() {
       const maxX = window.innerWidth - no.offsetWidth;
       const maxY = window.innerHeight - no.offsetHeight;
-
       no.style.left = Math.random() * maxX + "px";
       no.style.top = Math.random() * maxY + "px";
     }
 
-    /* ➕ DODATKOWE TAK */
+    /* ===== WSPÓLNY FINAŁ ===== */
+    function finish() {
+      topSection.remove();
+      no.remove();
+
+      // 🧹 USUŃ WSZYSTKIE DODATKOWE TAK
+      document.querySelectorAll(".extra-yes").forEach(btn => btn.remove());
+
+      container.innerHTML = `
+        <img src="hug.gif" class="hug-gif">
+        <h1 style="color:white; font-size:48px;">
+          WOOOOOOOOOOO!!!!!! ❤️🥰
+        </h1>
+        <p style="color:white; font-size:22px;">
+          Kocham Cię Dziubas!! 💖
+        </p>
+      `;
+
+      startHearts();
+    }
+
+    /* ===== DODATKOWE TAK ===== */
     function spawnYesButton() {
       if (!isMobile) return;
 
       const newYes = document.createElement("button");
       newYes.innerText = "TAK 💖";
-      newYes.classList.add("extra-yes"); // 🔑 oznaczenie
+      newYes.classList.add("extra-yes");
       newYes.style.position = "fixed";
       newYes.style.background = "#ff4d6d";
       newYes.style.color = "white";
@@ -149,11 +169,10 @@
 
       const maxX = window.innerWidth - 140;
       const maxY = window.innerHeight - 70;
-
       newYes.style.left = Math.random() * maxX + "px";
       newYes.style.top = Math.random() * maxY + "px";
 
-      newYes.onclick = yes.onclick;
+      newYes.onclick = finish; // 🔑 KLUCZ
 
       document.body.appendChild(newYes);
       yesCount++;
@@ -169,29 +188,10 @@
     no.addEventListener("pointerdown", handleNoInteraction);
     no.addEventListener("click", handleNoInteraction);
 
-    /* ❤️ KLIK TAK — SPRZĄTANIE */
-    yes.onclick = () => {
-      topSection.remove();
-      no.remove();
+    /* ORYGINALNY TAK */
+    yes.onclick = finish;
 
-      // 🧹 USUŃ WSZYSTKIE DODATKOWE TAK
-      document.querySelectorAll(".extra-yes").forEach(btn => btn.remove());
-
-      container.innerHTML = `
-        <img src="hug.gif" class="hug-gif">
-
-        <h1 style="color:white; font-size:48px;">
-          WOOOOOOOOOOO!!!!!! ❤️🥰
-        </h1>
-
-        <p style="color:white; font-size:22px;">
-          Kocham Cię Dziubas!! 💖
-        </p>
-      `;
-
-      startHearts();
-    };
-
+    /* ===== SERCA ===== */
     function startHearts() {
       spawnHeart();
     }
