@@ -19,7 +19,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      pointer-events: none;
     }
 
     .top-gif {
@@ -31,18 +30,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      position: relative;
-    }
-
-    h1 {
-      margin: 20px 0;
     }
 
     .buttons {
       position: relative;
       height: 80px;
       width: 300px;
-      margin-top: 10px;
     }
 
     button {
@@ -56,7 +49,6 @@
     #yes {
       background: #ff4d6d;
       color: white;
-      z-index: 2;
     }
 
     #no {
@@ -93,13 +85,11 @@
 
 <body>
 
-  <!-- GÓRA -->
-  <div class="top-section" id="topSection">
+  <div class="top-section">
     <img src="top.gif" class="top-gif">
   </div>
 
-  <!-- ŚRODEK -->
-  <div class="center-section" id="container">
+  <div class="center-section">
     <h1>Czy zostaniesz moją walentynką? ❤️</h1>
 
     <div class="buttons">
@@ -109,18 +99,15 @@
   </div>
 
   <script>
-    const no = document.getElementById("no");
     const yes = document.getElementById("yes");
-    const container = document.getElementById("container");
-    const topSection = document.getElementById("topSection");
+    const no = document.getElementById("no");
 
-    let yesCount = 1;
     const isMobile = matchMedia("(pointer: coarse)").matches;
 
     requestAnimationFrame(() => {
-      const yesRect = yes.getBoundingClientRect();
-      no.style.left = yesRect.right + 20 + "px";
-      no.style.top = yesRect.top + "px";
+      const r = yes.getBoundingClientRect();
+      no.style.left = r.right + 20 + "px";
+      no.style.top = r.top + "px";
     });
 
     function moveNo() {
@@ -130,98 +117,63 @@
       no.style.top = Math.random() * maxY + "px";
     }
 
-    /* ===== WSPÓLNY FINAŁ ===== */
-    function finish() {
-  // 🧹 USUŃ WSZYSTKIE PRZYCISKI (oryginalne + dodatkowe)
-  document.querySelectorAll("button").forEach(btn => btn.remove());
-
-  topSection.remove();
-
-  container.innerHTML = `
-    <img src="hug.gif" class="hug-gif">
-
-    <h1 style="color:white; font-size:48px;">
-      WOOOOOOOOOOO!!!!!! ❤️🥰
-    </h1>
-
-    <p style="color:white; font-size:22px;">
-      Kocham Cię Dziubas!! 💖
-    </p>
-  `;
-
-  startHearts();
-}
-
-
-    /* ===== DODATKOWE TAK ===== */
-    function spawnYesButton() {
+    function spawnYes() {
       if (!isMobile) return;
 
-      const newYes = document.createElement("button");
-      newYes.innerText = "TAK 💖";
-      newYes.classList.add("extra-yes");
-      newYes.style.position = "fixed";
-      newYes.style.background = "#ff4d6d";
-      newYes.style.color = "white";
-      newYes.style.borderRadius = "30px";
-      newYes.style.padding = "15px 30px";
-      newYes.style.fontSize = "18px";
-      newYes.style.cursor = "pointer";
-      newYes.style.zIndex = 1000 + yesCount;
+      const btn = document.createElement("button");
+      btn.textContent = "TAK 💖";
+      btn.style.position = "fixed";
+      btn.style.background = "#ff4d6d";
+      btn.style.color = "white";
+      btn.style.borderRadius = "30px";
+      btn.style.padding = "15px 30px";
+      btn.style.fontSize = "18px";
+      btn.style.cursor = "pointer";
+      btn.style.zIndex = 1000;
 
-      const maxX = window.innerWidth - 140;
-      const maxY = window.innerHeight - 70;
-      newYes.style.left = Math.random() * maxX + "px";
-      newYes.style.top = Math.random() * maxY + "px";
+      btn.style.left = Math.random() * (window.innerWidth - 140) + "px";
+      btn.style.top = Math.random() * (window.innerHeight - 70) + "px";
 
-      newYes.onclick = finish; // 🔑 KLUCZ
+      btn.onclick = finish;
 
-      document.body.appendChild(newYes);
-      yesCount++;
+      document.body.appendChild(btn);
     }
 
-    function handleNoInteraction(e) {
+    function handleNo(e) {
       e.preventDefault();
       moveNo();
-      spawnYesButton();
+      spawnYes();
     }
 
     no.addEventListener("mouseover", moveNo);
-    no.addEventListener("pointerdown", handleNoInteraction);
-    no.addEventListener("click", handleNoInteraction);
+    no.addEventListener("pointerdown", handleNo);
+    no.addEventListener("click", handleNo);
 
-    /* ORYGINALNY TAK */
     yes.onclick = finish;
 
-    /* ===== SERCA ===== */
+    // 🔥 KULOODPORNY FINAŁ
+    function finish() {
+      document.body.innerHTML = `
+        <div style="height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <img src="hug.gif" class="hug-gif">
+          <h1 style="color:white; font-size:48px;">WOOOOOOOOOOO!!!!!! ❤️🥰</h1>
+          <p style="color:white; font-size:22px;">Kocham Cię Dziubas!! 💖</p>
+        </div>
+      `;
+      startHearts();
+    }
+
     function startHearts() {
-      spawnHeart();
-    }
-
-    function spawnHeart() {
-      createHeart();
-      setTimeout(spawnHeart, random(200, 700));
-    }
-
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.innerText = "❤️";
-
-      const size = random(24, 60);
-      const duration = random(4000, 9000);
-
-      heart.style.left = random(0, 100) + "vw";
-      heart.style.fontSize = size + "px";
-      heart.style.opacity = Math.random();
-      heart.style.animationDuration = duration + "ms";
-
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), duration);
-    }
-
-    function random(min, max) {
-      return Math.random() * (max - min) + min;
+      setInterval(() => {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.innerText = "❤️";
+        h.style.left = Math.random() * 100 + "vw";
+        h.style.fontSize = Math.random() * 40 + 20 + "px";
+        h.style.animationDuration = Math.random() * 5000 + 4000 + "ms";
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 9000);
+      }, 300);
     }
   </script>
 
