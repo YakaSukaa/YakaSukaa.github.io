@@ -132,24 +132,26 @@
 
     /* ===== WSPÓLNY FINAŁ ===== */
     function finish() {
-      topSection.remove();
-      no.remove();
+  // 🧹 USUŃ WSZYSTKIE PRZYCISKI (oryginalne + dodatkowe)
+  document.querySelectorAll("button").forEach(btn => btn.remove());
 
-      // 🧹 USUŃ WSZYSTKIE DODATKOWE TAK
-      document.querySelectorAll(".extra-yes").forEach(btn => btn.remove());
+  topSection.remove();
 
-      container.innerHTML = `
-        <img src="hug.gif" class="hug-gif">
-        <h1 style="color:white; font-size:48px;">
-          WOOOOOOOOOOO!!!!!! ❤️🥰
-        </h1>
-        <p style="color:white; font-size:22px;">
-          Kocham Cię Dziubas!! 💖
-        </p>
-      `;
+  container.innerHTML = `
+    <img src="hug.gif" class="hug-gif">
 
-      startHearts();
-    }
+    <h1 style="color:white; font-size:48px;">
+      WOOOOOOOOOOO!!!!!! ❤️🥰
+    </h1>
+
+    <p style="color:white; font-size:22px;">
+      Kocham Cię Dziubas!! 💖
+    </p>
+  `;
+
+  startHearts();
+}
+
 
     /* ===== DODATKOWE TAK ===== */
     function spawnYesButton() {
