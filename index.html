@@ -19,6 +19,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      pointer-events: none;
     }
 
     .top-gif {
@@ -85,6 +86,7 @@
 
 <body>
 
+  <!-- START -->
   <div class="top-section">
     <img src="top.gif" class="top-gif">
   </div>
@@ -104,6 +106,7 @@
 
     const isMobile = matchMedia("(pointer: coarse)").matches;
 
+    /* ustaw NIE obok TAK */
     requestAnimationFrame(() => {
       const r = yes.getBoundingClientRect();
       no.style.left = r.right + 20 + "px";
@@ -151,16 +154,28 @@
 
     yes.onclick = finish;
 
-    // 🔥 KULOODPORNY FINAŁ
+    /* 🔥 FINAŁ — ASYNCHRONICZNIE (MESSENGER FIX) */
     function finish() {
-      document.body.innerHTML = `
-        <div style="height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-          <img src="hug.gif" class="hug-gif">
-          <h1 style="color:white; font-size:48px;">WOOOOOOOOOOO!!!!!! ❤️🥰</h1>
-          <p style="color:white; font-size:22px;">Kocham Cię Dziubas!! 💖</p>
-        </div>
-      `;
-      startHearts();
+      setTimeout(() => {
+        document.body.innerHTML = `
+          <div style="
+            height:100vh;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+          ">
+            <img src="hug.gif" class="hug-gif">
+            <h1 style="color:white; font-size:48px;">
+              WOOOOOOOOOOO!!!!!! ❤️🥰
+            </h1>
+            <p style="color:white; font-size:22px;">
+              Kocham Cię Dziubas!! 💖
+            </p>
+          </div>
+        `;
+        startHearts();
+      }, 0);
     }
 
     function startHearts() {
