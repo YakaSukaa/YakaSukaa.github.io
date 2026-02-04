@@ -1,60 +1,9 @@
-<script>
-  const no = document.getElementById("no");
-  const yes = document.getElementById("yes");
-
-  let heartInterval;
-
-  no.addEventListener("mouseover", () => {
-    no.style.left = Math.random() * (window.innerWidth - 100) + "px";
-    no.style.top = Math.random() * (window.innerHeight - 50) + "px";
-  });
-
-  yes.onclick = () => {
-    document.body.innerHTML = `
-      <h1 style="color:white; font-size:48px;">
-        Kocham Cię Dziubass! ❤️🥰
-      </h1>
-      </p>
-    `;
-
-    startHearts();
-  };
-
-  function startHearts() {
-    heartInterval = setInterval(() => {
-      createHeart();
-    }, random(200, 700));
-  }
-
-  function createHeart() {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerText = "❤️";
-
-    const size = random(16, 40);
-    const duration = random(4000, 9000);
-
-    heart.style.left = random(0, 100) + "vw";
-    heart.style.fontSize = size + "px";
-    heart.style.opacity = Math.random();
-    heart.style.animationDuration = duration + "ms";
-
-    document.body.appendChild(heart);
-
-    setTimeout(() => {
-      heart.remove();
-    }, duration);
-  }
-
-  function random(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-</script>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
   <title>Dla Ciebie ❤️</title>
+
   <style>
     body {
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
@@ -65,7 +14,9 @@
       align-items: center;
       font-family: Arial, sans-serif;
       text-align: center;
+      overflow: hidden;
     }
+
     button {
       padding: 15px 30px;
       font-size: 18px;
@@ -74,101 +25,84 @@
       cursor: pointer;
       margin: 10px;
     }
+
     #yes { background: #ff4d6d; color: white; }
     #no { position: absolute; }
 
     .heart {
-  position: fixed;
-  top: -20px;
-  font-size: 24px;
-  animation: fall 4s linear forwards;
-}
+      position: fixed;
+      top: -50px;
+      pointer-events: none;
+      animation-name: fall;
+      animation-timing-function: linear;
+    }
 
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-    opacity: 0;
-  }
-}
-.heart {
-  position: fixed;
-  top: -50px;
-  pointer-events: none;
-  animation-name: fall;
-  animation-timing-function: linear;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-    opacity: 0;
-  }
-}
-
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
+
 <body>
 
-  <div>
+  <div id="container">
     <h1>Czy zostaniesz moją walentynką? ❤️</h1>
     <button id="yes">TAK 💖</button>
     <button id="no">NIE 😢</button>
   </div>
 
   <script>
-  const no = document.getElementById("no");
-  const yes = document.getElementById("yes");
+    const no = document.getElementById("no");
+    const yes = document.getElementById("yes");
+    const container = document.getElementById("container");
 
-  let heartInterval;
+    no.addEventListener("mouseover", () => {
+      no.style.left = Math.random() * (window.innerWidth - 100) + "px";
+      no.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    });
 
-  no.addEventListener("mouseover", () => {
-    no.style.left = Math.random() * (window.innerWidth - 100) + "px";
-    no.style.top = Math.random() * (window.innerHeight - 50) + "px";
-  });
+    yes.onclick = () => {
+      container.innerHTML = `
+        <h1 style="color:white; font-size:48px;">
+          Kocham Cię Dziubas ❤️🥰
+        </h1>
+        <p style="color:white; font-size:22px;">
+          Jesteś moją walentynką 💖
+        </p>
+      `;
 
-  yes.onclick = () => {
-    document.body.innerHTML = `
-      <h1 style="color:white; font-size:48px;">
-        Kocham Cię Dziubas ❤️🥰
-      </h1>
-      </p>
-    `;
+      startHearts();
+    };
 
-    startHearts();
-  };
+    function startHearts() {
+      setInterval(createHeart, random(200, 700));
+    }
 
-  function startHearts() {
-    heartInterval = setInterval(() => {
-      createHeart();
-    }, random(200, 700));
-  }
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerText = "❤️";
 
-  function createHeart() {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerText = "❤️";
+      const size = random(16, 40);
+      const duration = random(4000, 9000);
 
-    const size = random(16, 40);
-    const duration = random(4000, 9000);
+      heart.style.left = random(0, 100) + "vw";
+      heart.style.fontSize = size + "px";
+      heart.style.opacity = Math.random();
+      heart.style.animationDuration = duration + "ms";
 
-    heart.style.left = random(0, 100) + "vw";
-    heart.style.fontSize = size + "px";
-    heart.style.opacity = Math.random();
-    heart.style.animationDuration = duration + "ms";
+      document.body.appendChild(heart);
 
-    document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), duration);
+    }
 
-    setTimeout(() => {
-      heart.remove();
-    }, duration);
-  }
-
-  function random(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-</script>
-
-
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+  </script>
 
 </body>
 </html>
