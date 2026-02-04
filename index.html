@@ -14,7 +14,6 @@
       overflow: hidden;
     }
 
-    /* ===== GÓRA – 1/3 EKRANU ===== */
     .top-section {
       height: 33vh;
       display: flex;
@@ -27,7 +26,6 @@
       width: 320px;
     }
 
-    /* ===== ŚRODEK ===== */
     .center-section {
       height: 67vh;
       display: flex;
@@ -40,7 +38,6 @@
       margin: 20px 0;
     }
 
-    /* ===== PRZYCISKI ===== */
     .buttons {
       position: relative;
       height: 80px;
@@ -67,7 +64,6 @@
       z-index: 999;
     }
 
-    /* ===== GIF PO KLIKNIĘCIU ===== */
     .hug-gif {
       width: 400px;
       margin-bottom: 20px;
@@ -79,7 +75,6 @@
       to   { transform: scale(1); opacity: 1; }
     }
 
-    /* ===== SERCA ===== */
     .heart {
       position: fixed;
       top: -50px;
@@ -122,14 +117,12 @@
     let yesCount = 1;
     const isMobile = matchMedia("(pointer: coarse)").matches;
 
-    /* STARTOWA POZYCJA NIE (obok TAK) */
     requestAnimationFrame(() => {
       const yesRect = yes.getBoundingClientRect();
       no.style.left = yesRect.right + 20 + "px";
       no.style.top = yesRect.top + "px";
     });
 
-    /* UCIEKANIE NIE */
     function moveNo() {
       const maxX = window.innerWidth - no.offsetWidth;
       const maxY = window.innerHeight - no.offsetHeight;
@@ -138,16 +131,16 @@
       no.style.top = Math.random() * maxY + "px";
     }
 
-    /* DODAWANIE NOWEGO TAK (tylko mobile) */
+    /* ➕ DODATKOWE TAK */
     function spawnYesButton() {
       if (!isMobile) return;
 
       const newYes = document.createElement("button");
       newYes.innerText = "TAK 💖";
+      newYes.classList.add("extra-yes"); // 🔑 oznaczenie
       newYes.style.position = "fixed";
       newYes.style.background = "#ff4d6d";
       newYes.style.color = "white";
-      newYes.style.border = "none";
       newYes.style.borderRadius = "30px";
       newYes.style.padding = "15px 30px";
       newYes.style.fontSize = "18px";
@@ -166,24 +159,23 @@
       yesCount++;
     }
 
-    /* JEDNA FUNKCJA – DZIAŁA WSZĘDZIE (Safari, Messenger, PC) */
     function handleNoInteraction(e) {
       e.preventDefault();
       moveNo();
       spawnYesButton();
     }
 
-    /* DESKTOP */
     no.addEventListener("mouseover", moveNo);
-
-    /* MOBILE + IN-APP (Messenger, Instagram, itp.) */
     no.addEventListener("pointerdown", handleNoInteraction);
-    no.addEventListener("click", handleNoInteraction); // fallback
+    no.addEventListener("click", handleNoInteraction);
 
-    /* KLIK TAK */
+    /* ❤️ KLIK TAK — SPRZĄTANIE */
     yes.onclick = () => {
       topSection.remove();
       no.remove();
+
+      // 🧹 USUŃ WSZYSTKIE DODATKOWE TAK
+      document.querySelectorAll(".extra-yes").forEach(btn => btn.remove());
 
       container.innerHTML = `
         <img src="hug.gif" class="hug-gif">
@@ -200,7 +192,6 @@
       startHearts();
     };
 
-    /* SERCA */
     function startHearts() {
       spawnHeart();
     }
