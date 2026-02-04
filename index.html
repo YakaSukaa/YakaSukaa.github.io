@@ -35,16 +35,42 @@
   </div>
 
   <script>
-    const no = document.getElementById("no");
-    no.addEventListener("mouseover", () => {
-      no.style.left = Math.random() * (window.innerWidth - 100) + "px";
-      no.style.top = Math.random() * (window.innerHeight - 50) + "px";
-    });
+  const no = document.getElementById("no");
+  const yes = document.getElementById("yes");
 
-    document.getElementById("yes").onclick = () => {
-      document.body.innerHTML = "<h1>Wiedziałem!!! ❤️🥰</h1>";
-    };
-  </script>
+  no.addEventListener("mouseover", () => {
+    no.style.left = Math.random() * (window.innerWidth - 100) + "px";
+    no.style.top = Math.random() * (window.innerHeight - 50) + "px";
+  });
+
+  yes.onclick = () => {
+    document.body.innerHTML = `
+      <h1 style="color:white; font-size:48px;">
+        Wiedziałem!!! ❤️🥰
+      </h1>
+      <p style="color:white; font-size:22px;">
+        Jesteś najlepszą walentynką na świecie 💖
+      </p>
+    `;
+
+    setInterval(createHeart, 200);
+  };
+
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (20 + Math.random() * 20) + "px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 4000);
+  }
+</script>
+
 
 </body>
 </html>
