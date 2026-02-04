@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Walentynka ❤️</title>
+  <title>Dla Ciebie ❤️</title>
 
   <style>
     body {
@@ -14,7 +14,7 @@
       overflow: hidden;
     }
 
-    /* SEKCJA GÓRNA – 1/3 EKRANU */
+    /* ===== GÓRA – 1/3 EKRANU ===== */
     .top-section {
       height: 33vh;
       display: flex;
@@ -24,20 +24,28 @@
     }
 
     .top-gif {
-      width: 320px; /* x2 */
+      width: 320px;
     }
 
-    /* SEKCJA ŚRODKOWA */
+    /* ===== ŚRODEK ===== */
     .center-section {
       height: 67vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
       align-items: center;
+      position: relative; /* 🔑 dla uciekającego NIE */
     }
 
     h1 {
-      margin-top: 20px;
+      margin: 20px 0;
+    }
+
+    /* ===== PRZYCISKI ===== */
+    .buttons {
+      display: flex;
+      gap: 20px;
+      position: relative;
+      margin-top: 10px;
     }
 
     button {
@@ -46,13 +54,21 @@
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      margin: 10px;
     }
 
-    #yes { background: #ff4d6d; color: white; }
-    #no { position: absolute; }
+    #yes {
+      background: #ff4d6d;
+      color: white;
+      z-index: 2;
+    }
 
-    /* GIF PO KLIKNIĘCIU */
+    #no {
+      position: absolute;
+      left: 120px; /* start po prawej od TAK */
+      z-index: 1;
+    }
+
+    /* ===== GIF PO KLIKNIĘCIU ===== */
     .hug-gif {
       width: 400px;
       margin-bottom: 20px;
@@ -64,7 +80,7 @@
       to   { transform: scale(1); opacity: 1; }
     }
 
-    /* SERCA */
+    /* ===== SERCA ===== */
     .heart {
       position: fixed;
       top: -50px;
@@ -83,29 +99,38 @@
 
 <body>
 
-  <!-- GÓRA (czerwony kwadrat) -->
-  <div class="top-section">
+  <!-- GÓRNA SEKCJA -->
+  <div class="top-section" id="topSection">
     <img src="top.gif" class="top-gif">
   </div>
 
   <!-- ŚRODEK -->
   <div class="center-section" id="container">
     <h1>Czy zostaniesz moją walentynką? ❤️</h1>
-    <button id="yes">TAK 💖</button>
-    <button id="no">NIE 😢</button>
+
+    <div class="buttons">
+      <button id="yes">TAK 💖</button>
+      <button id="no">NIE 😢</button>
+    </div>
   </div>
 
   <script>
     const no = document.getElementById("no");
     const yes = document.getElementById("yes");
     const container = document.getElementById("container");
+    const topSection = document.getElementById("topSection");
 
+    /* UCIEKAJĄCE NIE */
     no.addEventListener("mouseover", () => {
-      no.style.left = Math.random() * (window.innerWidth - 100) + "px";
-      no.style.top = Math.random() * (window.innerHeight - 50) + "px";
+      const x = Math.random() * 200 - 100;
+      const y = Math.random() * 100 - 50;
+      no.style.transform = `translate(${x}px, ${y}px)`;
     });
 
+    /* KLIK TAK */
     yes.onclick = () => {
+      topSection.remove();
+
       container.innerHTML = `
         <img src="hug.gif" class="hug-gif">
 
@@ -121,6 +146,7 @@
       startHearts();
     };
 
+    /* SERCA */
     function startHearts() {
       spawnHeart();
     }
