@@ -33,7 +33,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      position: relative; /* punkt odniesienia */
+      position: relative;
     }
 
     h1 {
@@ -54,21 +54,18 @@
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      position: absolute;
     }
 
     #yes {
       background: #ff4d6d;
       color: white;
-      left: 0;
-      top: 0;
       z-index: 2;
     }
 
+    /* 🔑 KLUCZ: NIE jest FIXED */
     #no {
-      left: 140px; /* start po prawej */
-      top: 0;
-      z-index: 1;
+      position: fixed;
+      z-index: 999;
     }
 
     /* ===== GIF PO KLIKNIĘCIU ===== */
@@ -111,7 +108,7 @@
   <div class="center-section" id="container">
     <h1>Czy zostaniesz moją walentynką? ❤️</h1>
 
-    <div class="buttons" id="buttons">
+    <div class="buttons">
       <button id="yes">TAK 💖</button>
       <button id="no">NIE 😢</button>
     </div>
@@ -122,12 +119,16 @@
     const yes = document.getElementById("yes");
     const container = document.getElementById("container");
     const topSection = document.getElementById("topSection");
-    const buttons = document.getElementById("buttons");
 
-    /* UCIEKAJĄCE NIE – JAK WCZEŚNIEJ */
+    /* STARTOWA POZYCJA NIE (obok TAK) */
+    const yesRect = yes.getBoundingClientRect();
+    no.style.left = yesRect.right + 20 + "px";
+    no.style.top = yesRect.top + "px";
+
+    /* 🔥 UCIEKA PO CAŁYM EKRANIE */
     no.addEventListener("mouseover", () => {
-      const maxX = buttons.clientWidth - no.offsetWidth;
-      const maxY = buttons.clientHeight - no.offsetHeight;
+      const maxX = window.innerWidth - no.offsetWidth;
+      const maxY = window.innerHeight - no.offsetHeight;
 
       const x = Math.random() * maxX;
       const y = Math.random() * maxY;
@@ -139,6 +140,7 @@
     /* KLIK TAK */
     yes.onclick = () => {
       topSection.remove();
+      no.remove(); // NIE znika po TAK 😈
 
       container.innerHTML = `
         <img src="hug.gif" class="hug-gif">
