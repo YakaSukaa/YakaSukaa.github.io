@@ -38,6 +38,20 @@
     opacity: 0;
   }
 }
+.heart {
+  position: fixed;
+  top: -50px;
+  pointer-events: none;
+  animation-name: fall;
+  animation-timing-function: linear;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
+}
 
   </style>
 </head>
@@ -53,6 +67,8 @@
   const no = document.getElementById("no");
   const yes = document.getElementById("yes");
 
+  let heartInterval;
+
   no.addEventListener("mouseover", () => {
     no.style.left = Math.random() * (window.innerWidth - 100) + "px";
     no.style.top = Math.random() * (window.innerHeight - 50) + "px";
@@ -64,27 +80,44 @@
         Wiedziałem!!! ❤️🥰
       </h1>
       <p style="color:white; font-size:22px;">
-        Jesteś najlepszą walentynką na świecie 💖
+        Jesteś moją walentynką 💖
       </p>
     `;
 
-    setInterval(createHeart, 200);
+    startHearts();
   };
+
+  function startHearts() {
+    heartInterval = setInterval(() => {
+      createHeart();
+    }, random(200, 700));
+  }
 
   function createHeart() {
     const heart = document.createElement("div");
-    heart.className = "heart";
+    heart.classList.add("heart");
     heart.innerText = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (20 + Math.random() * 20) + "px";
+
+    const size = random(16, 40);
+    const duration = random(4000, 9000);
+
+    heart.style.left = random(0, 100) + "vw";
+    heart.style.fontSize = size + "px";
+    heart.style.opacity = Math.random();
+    heart.style.animationDuration = duration + "ms";
 
     document.body.appendChild(heart);
 
     setTimeout(() => {
       heart.remove();
-    }, 4000);
+    }, duration);
+  }
+
+  function random(min, max) {
+    return Math.random() * (max - min) + min;
   }
 </script>
+
 
 
 </body>
