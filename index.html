@@ -120,11 +120,14 @@
     const topSection = document.getElementById("topSection");
 
     let yesCount = 1;
+    const isMobile = matchMedia("(pointer: coarse)").matches;
 
     /* STARTOWA POZYCJA NIE (obok TAK) */
-    const yesRect = yes.getBoundingClientRect();
-    no.style.left = yesRect.right + 20 + "px";
-    no.style.top = yesRect.top + "px";
+    requestAnimationFrame(() => {
+      const yesRect = yes.getBoundingClientRect();
+      no.style.left = yesRect.right + 20 + "px";
+      no.style.top = yesRect.top + "px";
+    });
 
     /* UCIEKANIE NIE */
     function moveNo() {
@@ -135,8 +138,10 @@
       no.style.top = Math.random() * maxY + "px";
     }
 
-    /* 🔥 NOWY TAK NA MOBILE */
+    /* DODAWANIE NOWEGO TAK (tylko mobile) */
     function spawnYesButton() {
+      if (!isMobile) return;
+
       const newYes = document.createElement("button");
       newYes.innerText = "TAK 💖";
       newYes.style.position = "fixed";
@@ -161,15 +166,19 @@
       yesCount++;
     }
 
-    /* DESKTOP */
-    no.addEventListener("mouseover", moveNo);
-
-    /* MOBILE */
-    no.addEventListener("touchstart", (e) => {
+    /* JEDNA FUNKCJA – DZIAŁA WSZĘDZIE (Safari, Messenger, PC) */
+    function handleNoInteraction(e) {
       e.preventDefault();
       moveNo();
       spawnYesButton();
-    });
+    }
+
+    /* DESKTOP */
+    no.addEventListener("mouseover", moveNo);
+
+    /* MOBILE + IN-APP (Messenger, Instagram, itp.) */
+    no.addEventListener("pointerdown", handleNoInteraction);
+    no.addEventListener("click", handleNoInteraction); // fallback
 
     /* KLIK TAK */
     yes.onclick = () => {
